@@ -84,7 +84,7 @@ namespace Sib.UmbracoStaticFileGenerator.Services
             }
         }
 
-        public static void Create404(string path, IUmbracoContextFactory contextFactory)
+        public static void DeleteFilesAndFolders(string path, IUmbracoContextFactory contextFactory)
         {
             // is this always the last item or does it also use children?
             var trashedEntity = path.Split(',').Last();
