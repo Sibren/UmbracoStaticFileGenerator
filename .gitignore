@@ -24,3 +24,17 @@
 
 # Ignore the Models Builder models out of date flag
 **/App_Data/Models/ood.flag
+src/.vs/
+src/packages/
+src/Sib.UmbracoStaticFileGenerator/Sib.UmbracoStaticFileGenerator.csproj.user
+src/Sib.UmbracoStaticFileGenerator/bin/
+src/Sib.UmbracoStaticFileGenerator/obj/
+src/Sib.UmbracoStaticFileGenerator/Umbraco/
+src/Sib.UmbracoStaticFileGenerator/www/
+src/Sib.UmbracoStaticFileGenerator/App_Plugins/ModelsBuilder/
+src/Sib.UmbracoStaticFileGenerator/Media/
+src/Sib.UmbracoStaticFileGenerator/Scripts/
+src/Sib.UmbracoStaticFileGenerator/fonts/
+src/Sib.UmbracoStaticFileGenerator/Content/
+src/Sib.UmbracoStaticFileGenerator/config/
+src/Sib.UmbracoStaticFileGenerator/Views/Partials/Grid/
