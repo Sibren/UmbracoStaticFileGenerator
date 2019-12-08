@@ -26,6 +26,8 @@ namespace Sib.UmbracoStaticFileGenerator.Services
 
         private static readonly object lockObject = new object();
 
+        private static readonly string fileNameFor301 = ".301";
+
         public static void DoUponSavedActions(IEnumerable<IPublishedContent> entities, IUmbracoContextFactory contextFactory, string baseUrl)
         {
             Thread.Sleep(2000);
@@ -54,7 +56,7 @@ namespace Sib.UmbracoStaticFileGenerator.Services
                         if (entity == null || (entity.TemplateId == null || entity.TemplateId < 1)) continue;
                         if (entity.Id == 0)
                         {
-                            throw new ArgumentNullException("Dit zou niet moeten gebeuren");
+                            throw new ArgumentNullException("This should never happen");
                         }
                         else if (entity.Id > 0 && entity.IsPublished() == true)
                         {
@@ -74,6 +76,7 @@ namespace Sib.UmbracoStaticFileGenerator.Services
                             var html = ContentUpdater.GetHtmlFromUrl(niceUrl);
 
                             CreateHtmlFile(node.Url, html);
+                            Delete301(node.Url);
                         }
                         else
                         {
@@ -114,8 +117,20 @@ namespace Sib.UmbracoStaticFileGenerator.Services
 
         public static void Create301(string oldUrl, string url)
         {
-            var html = $"<meta http-equiv=\"refresh\" content=\"0; URL={url}\">";
-            CreateHtmlFile(oldUrl, html);
+            // Create a file so we can recognize it not to be indexed by crawlers etc
+            CreateFile(oldUrl, fileNameFor301);
+            var textFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\templates\\301.html";
+            string text = File.ReadAllText(textFile);
+            var htmlContents = text.Replace("{url}", url);
+            CreateHtmlFile(oldUrl, htmlContents);
+        }
+
+        public static void Delete301(string folderName)
+        {
+            var folderLocation = GetFolderLocation(folderName);
+            bool exists = Directory.Exists(folderLocation);
+            if (exists)
+                File.Delete(folderLocation.TrimEnd('\\') + "\\" + fileNameFor301);
         }
 
         private static string GetFolderLocation(string url)
@@ -125,14 +140,19 @@ namespace Sib.UmbracoStaticFileGenerator.Services
             return folderLocation;
         }
 
-        public static void CreateHtmlFile(string url, string html)
+        public static void CreateFile(string url, string fileName, string content = "")
         {
             var folderLocation = GetFolderLocation(url);
             bool exists = Directory.Exists(folderLocation);
             if (!exists)
                 Directory.CreateDirectory(folderLocation);
 
-            System.IO.File.WriteAllText(folderLocation.TrimEnd('\\') + "\\index.html", html);
+            File.WriteAllText(folderLocation.TrimEnd('\\') + "\\" + fileName, content);
+        }
+
+        public static void CreateHtmlFile(string url, string html)
+        {
+            CreateFile(url, "index.html", html);
         }
 
         /// <summary>
@@ -167,20 +187,28 @@ namespace Sib.UmbracoStaticFileGenerator.Services
             var oldHtmlDocument = new HtmlDocument();
             oldHtmlDocument.LoadHtml(oldHtml);
 
-            foreach (HtmlNode link in oldHtmlDocument.DocumentNode.SelectNodes("//a[@href]"))
+            try
             {
-                // Just in case when a link is null (should not happen)
-                if (link == null) continue;
+                foreach (HtmlNode link in oldHtmlDocument.DocumentNode.SelectNodes("//a[@href]"))
+                {
+                    // Just in case when a link is null (should not happen)
+                    if (link == null) continue;
 
-                var linkAttribute = link.Attributes["href"];
+                    var linkAttribute = link.Attributes["href"];
 
-                // if there's no link or it has no value, move on
-                if (linkAttribute == null || string.IsNullOrEmpty(linkAttribute.Value)) continue;
+                    // if there's no link or it has no value, move on
+                    if (linkAttribute == null || string.IsNullOrEmpty(linkAttribute.Value)) continue;
 
-                linkAttribute.Value = linkAttribute.Value.Replace(cmsRootFolder.TrimEnd('/'), "");
+                    linkAttribute.Value = linkAttribute.Value.Replace(cmsRootFolder.TrimEnd('/'), "");
+                }
+
+                return oldHtmlDocument.DocumentNode.OuterHtml;
+            }
+            catch (Exception)
+            {
+                return "";
             }
 
-            return oldHtmlDocument.DocumentNode.OuterHtml;
         }
     }
 }

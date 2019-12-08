@@ -1,10 +1,7 @@
 ﻿using Microsoft.Owin.FileSystems;
 using Microsoft.Owin.StaticFiles;
 using Owin;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Umbraco.Core;
 using Umbraco.Core.Composing;
 using Umbraco.Core.Events;
@@ -14,14 +11,11 @@ using Umbraco.Web;
 
 namespace Sib.UmbracoStaticFileGenerator
 {
-    //public class MyComposer : ComponentComposer<MyComponent>, IUserComposer
-    //{
-
-    //}​
-
+    /// <summary>
+    /// Leave as is unless you know what you're doing
+    /// </summary>
     public class MyComposer : ComponentComposer<StartupCustomRoutingComponent>, IUserComposer
     {
-
     }
 
     public class StartupCustomRoutingComponent : IComponent
