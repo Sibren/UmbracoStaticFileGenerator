@@ -53,7 +53,8 @@ namespace Sib.UmbracoStaticFileGenerator.Services
 
                             StandingData.OldModels.RemoveAll(x => x.UmbracoId == entity.Id);
                         }
-                        if (entity == null || (entity.TemplateId == null || entity.TemplateId < 1)) continue;
+                        // Todo: check if internalredirectID
+                        if (entity == null || ((entity.TemplateId == null || entity.TemplateId < 1) && !entity.Properties.Any(x => x.Alias == StandingData.UmbracoInternalRedirectIdName))) continue;
                         if (entity.Id == 0)
                         {
                             throw new ArgumentNullException("This should never happen");
@@ -121,7 +122,7 @@ namespace Sib.UmbracoStaticFileGenerator.Services
             CreateFile(oldUrl, fileNameFor301);
             var textFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\templates\\301.html";
             string text = File.ReadAllText(textFile);
-            var htmlContents = text.Replace("{url}", url);
+            var htmlContents = text.Replace("{url}", url.Replace(cmsRootFolder.TrimEnd('/'), ""));
             CreateHtmlFile(oldUrl, htmlContents);
         }
 

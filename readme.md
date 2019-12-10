@@ -18,7 +18,7 @@ Password: Password123
 3. ~~Take care of deleted items~~
 4. ~~Replace urls with actual urls~~
 5. Make more settings variable (create config file)
-6. Check if / has index.html and what to do with it?
+6. ~~Check if / has index.html and what to do with it?~~
 
 ### Wishlist
 1. Publish all nodes to HTML when site starts/has no items in /www/

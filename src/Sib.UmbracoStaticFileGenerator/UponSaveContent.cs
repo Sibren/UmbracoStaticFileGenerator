@@ -56,12 +56,27 @@ namespace Sib.UmbracoStaticFileGenerator
             try
             {
                 var list = new List<IPublishedContent>();
-                // don't listen to items without a template
-                foreach (var savedEntity in e.PublishedEntities.Where(x => x.TemplateId > 0))
+                // don't listen to items without a template or a redirect
+                foreach (var savedEntity in e.PublishedEntities)
                 {
-                    var helper = Umbraco.Web.Composing.Current.UmbracoHelper;
-                    var node = helper.Content(savedEntity.Id);
-                    list.Add(node);
+                    if (savedEntity.Properties.Any(x => x.Alias == StandingData.UmbracoInternalRedirectIdName))
+                    {
+                        var value = savedEntity.Properties.FirstOrDefault(x => x.Alias == StandingData.UmbracoInternalRedirectIdName);
+                        var currentRedirectValue = value.GetValue();
+                        if (currentRedirectValue != null)
+                        {
+                            var helper = Umbraco.Web.Composing.Current.UmbracoHelper;
+                            var node = helper.Content(savedEntity.Id);
+                            list.Add(node);
+                        }
+
+                    }
+                    else if (savedEntity.TemplateId > 0)
+                    {
+                        var helper = Umbraco.Web.Composing.Current.UmbracoHelper;
+                        var node = helper.Content(savedEntity.Id);
+                        list.Add(node);
+                    }
                 }
 
 #pragma warning disable 4014
