@@ -1,4 +1,5 @@
-﻿using Sib.UmbracoStaticFileGenerator.Models;
+﻿using Newtonsoft.Json;
+using Sib.UmbracoStaticFileGenerator.Models;
 using System;
 using System.Collections.Generic;
 
@@ -38,5 +39,17 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
         /// The 301-filename recognizing for sitemap etc
         /// </summary>
         public static string FileName301 = ".301";
+
+        public static void SaveStandingData(ImportConfigModel configModel)
+        {
+            if (!string.IsNullOrEmpty(configModel.FileName301)) StandingData.FileName301 = configModel.FileName301;
+            if (!string.IsNullOrEmpty(configModel.HtmlFile301)) StandingData.HtmlFile301 = configModel.HtmlFile301;
+            if (!string.IsNullOrEmpty(configModel.HtmlRootFolder)) StandingData.HtmlRootFolder = configModel.HtmlRootFolder;
+            if (!string.IsNullOrEmpty(configModel.TemplatesFolder)) StandingData.TemplatesFolder = configModel.TemplatesFolder;
+            if (!string.IsNullOrEmpty(configModel.UmbracoRootFolderUrl)) StandingData.UmbracoRootFolderUrl = configModel.UmbracoRootFolderUrl;
+
+            // todo: save to config
+            ContentUpdater.CreateFile(StandingData.ConfigFile, JsonConvert.SerializeObject(configModel));
+        }
     }
 }

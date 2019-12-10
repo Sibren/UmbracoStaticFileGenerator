@@ -29,28 +29,34 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
 
     public class StartupCustomRoutingComponent : IComponent
     {
+        private readonly StaticFileGeneratorConfig config;
+
+        public StartupCustomRoutingComponent(StaticFileGeneratorConfig config)
+        {
+            this.config = config;
+        }
         public void Initialize()
         {
-            try
+            if (config.IsEnabled)
             {
-                if (File.Exists(StandingData.ConfigFile))
+                try
                 {
-                    string jsonConfig = File.ReadAllText(StandingData.ConfigFile);
-                    var configModel = JsonConvert.DeserializeObject<ImportConfigModel>(jsonConfig);
+                    if (File.Exists(StandingData.ConfigFile))
+                    {
+                        string jsonConfig = File.ReadAllText(StandingData.ConfigFile);
+                        var configModel = JsonConvert.DeserializeObject<ImportConfigModel>(jsonConfig);
 
-                    if (!string.IsNullOrEmpty(configModel.FileName301)) StandingData.FileName301 = configModel.FileName301;
-                    if (!string.IsNullOrEmpty(configModel.HtmlFile301)) StandingData.HtmlFile301 = configModel.HtmlFile301;
-                    if (!string.IsNullOrEmpty(configModel.HtmlRootFolder)) StandingData.HtmlRootFolder = configModel.HtmlRootFolder;
-                    if (!string.IsNullOrEmpty(configModel.TemplatesFolder)) StandingData.TemplatesFolder = configModel.TemplatesFolder;
-                    if (!string.IsNullOrEmpty(configModel.UmbracoRootFolderUrl)) StandingData.UmbracoRootFolderUrl = configModel.UmbracoRootFolderUrl;
+                        StandingData.SaveStandingData(configModel);
+                    }
+
                 }
+                catch (Exception)
+                {
 
+                }
+                UmbracoDefaultOwinStartup.MiddlewareConfigured += (_, e) => ConfigureMiddleware(e.AppBuilder);
+                
             }
-            catch (Exception)
-            {
-
-            }
-            UmbracoDefaultOwinStartup.MiddlewareConfigured += (_, e) => ConfigureMiddleware(e.AppBuilder);
             InstallServerVars();
         }
 
@@ -79,6 +85,10 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
             };
         }
 
+        /// <summary>
+        /// Ignore all routing from files, use HtmlRootFolder
+        /// </summary>
+        /// <param name="app"></param>
         private void ConfigureMiddleware(IAppBuilder app)
         {
             var physicalFileSystem = new PhysicalFileSystem(@"./" + StandingData.HtmlRootFolder);

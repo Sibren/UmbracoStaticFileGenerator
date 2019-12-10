@@ -4,13 +4,13 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
 {
     public class StaticFileGeneratorConfig
     {
-        public bool Enable { get; }
+        public bool IsEnabled { get; }
 
         public StaticFileGeneratorConfig()
         {
             const string prefix = "Sib.UmbracoStaticFileGenerator.";
 
-            Enable = ConfigurationManager.AppSettings[prefix + "Enabled"] == "true";
+            IsEnabled = ConfigurationManager.AppSettings[prefix + "Enabled"] == "true";
         }
     }
 }

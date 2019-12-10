@@ -2,27 +2,20 @@
 
     var vm = this;
 
-    vm.reload = reload;
-    vm.generate = null;
+    vm.generate = generate;
     vm.dashboard = null;
-
-    //function generate() {
-    //    vm.generating = true;
-    //    umbRequestHelper.resourcePromise(
-    //            $http.post(umbRequestHelper.getApiUrl("modelsBuilderBaseUrl", "BuildModels")),
-    //            'Failed to generate.')
-    //        .then(function (result) {
-    //            vm.generating = false;
-    //            vm.dashboard = result;
-    //        });
-    //}
-
-    function reload() {
-        vm.loading = true;
-        staticFileGeneratorResource.getDashboard().then(function (result) {
-            vm.dashboard = result;
-            vm.loading = false;
-        });
+    vm.saved = false;
+    function generate() {
+        vm.generating = true;
+        umbRequestHelper.resourcePromise(
+            $http.post(umbRequestHelper.getApiUrl("StaticFileGenerator", "SaveConfig"), vm.dashboard.config),
+            'Failed to generate.')
+            .then(function (result) {
+                vm.generating = false;
+                vm.dashboard = result;
+                vm.loading = false;
+                vm.saved = true;
+            });
     }
 
     function init() {

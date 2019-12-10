@@ -14,10 +14,8 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
 
         private static readonly object lockObject = new object();
 
-
-        public static void DoUponSavedActions(IEnumerable<IPublishedContent> entities, IUmbracoContextFactory contextFactory, string baseUrl)
+        private static void DoUponSavedActionsWithoutWait(IEnumerable<IPublishedContent> entities, IUmbracoContextFactory contextFactory, string baseUrl)
         {
-            Thread.Sleep(2000);
             lock (lockObject)
             {
 
@@ -40,7 +38,7 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
 
                             StandingData.OldModels.RemoveAll(x => x.UmbracoId == entity.Id);
                         }
-                        // Todo: check if internalredirectID
+                        // Todo: check if any internalredirectID
                         if (entity == null || (entity.TemplateId == null || entity.TemplateId < 1) && !entity.Properties.Any(x => x.Alias == StandingData.UmbracoInternalRedirectIdName)) continue;
                         if (entity.Id == 0)
                         {
@@ -55,7 +53,7 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
 
                             if (node.Children.Any())
                             {
-                                DoUponSavedActions(node.Children, contextFactory, baseUrl);
+                                DoUponSavedActionsWithoutWait(node.Children, contextFactory, baseUrl);
                             }
 
                             // if it's a new page, it has no url yet. We have to move this to somewhere else, after saving
@@ -73,6 +71,19 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Wait until shit is saved. Timout is just a starter
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <param name="contextFactory"></param>
+        /// <param name="baseUrl"></param>
+        public static void DoUponSavedActionsWithWait(IEnumerable<IPublishedContent> entities, IUmbracoContextFactory contextFactory, string baseUrl)
+        {
+            // Todo: check if saved instead of wait
+            Thread.Sleep(2000);
+            DoUponSavedActionsWithoutWait(entities, contextFactory, baseUrl);
         }
 
         public static void DeleteFilesAndFolders(string path, IUmbracoContextFactory contextFactory)
@@ -107,7 +118,7 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
         {
 
             // Create a file so we can recognize it not to be indexed by crawlers etc
-            CreateFile(oldUrl, StandingData.FileName301);
+            CreateWebsiteFile(oldUrl, StandingData.FileName301);
             var textFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\"  + StandingData.TemplatesFolder.RemoveAllSlashes() + "\\" + StandingData.HtmlFile301.RemoveAllSlashes();
             string text = File.ReadAllText(textFile);
             var htmlContents = text.Replace("{url}", url.Replace(StandingData.UmbracoRootFolderUrl.RemoveAllSlashes(), ""));
@@ -129,19 +140,24 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
             return folderLocation;
         }
 
-        public static void CreateFile(string url, string fileName, string content = "")
+        public static void CreateFile(string fileName, string content = "")
+        {
+            File.WriteAllText(fileName, content);
+        }
+
+        public static void CreateWebsiteFile(string url, string fileName, string content = "")
         {
             var folderLocation = GetFolderLocation(url);
             bool exists = Directory.Exists(folderLocation);
             if (!exists)
                 Directory.CreateDirectory(folderLocation);
 
-            File.WriteAllText(folderLocation.TrimEnd('\\') + "\\" + fileName, content);
+            CreateFile(folderLocation.TrimEnd('\\') + "\\" + fileName, content);
         }
 
         public static void CreateHtmlFile(string url, string html)
         {
-            CreateFile(url, "index.html", html);
+            CreateWebsiteFile(url, "index.html", html);
         }
 
         /// <summary>

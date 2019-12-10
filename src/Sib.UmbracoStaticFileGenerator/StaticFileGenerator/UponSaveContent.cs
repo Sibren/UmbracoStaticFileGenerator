@@ -28,25 +28,32 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
     public class SubscribeToSaving : IComponent
     {
         //Todo: dependency injection
-        private readonly IUmbracoContextFactory _umbracoContextFactory;
-        public SubscribeToSaving(IUmbracoContextFactory umbracoContextFactory)
+        private readonly IUmbracoContextFactory umbracoContextFactory;
+        private readonly StaticFileGeneratorConfig config;
+
+        public SubscribeToSaving(IUmbracoContextFactory umbracoContextFactory, StaticFileGeneratorConfig config)
         {
-            _umbracoContextFactory = umbracoContextFactory;
+            this.umbracoContextFactory = umbracoContextFactory;
+            this.config = config;
         }
 
         // initialize: runs once when Umbraco starts
         public void Initialize()
         {
-            ContentService.Saving += ContentService_Saving;
-            ContentService.Published += ContentService_Published;
-            ContentService.Trashing += ContentService_Trashing;
+            if (config.IsEnabled)
+            {
+                ContentService.Saving += ContentService_Saving;
+                ContentService.Published += ContentService_Published;
+                ContentService.Trashing += ContentService_Trashing;
+            }
+
         }
 
         private void ContentService_Trashing(IContentService sender, MoveEventArgs<IContent> e)
         {
             foreach (var deletedEntity in e.MoveInfoCollection)
             {
-                ContentUpdater.DeleteFilesAndFolders(deletedEntity.OriginalPath, _umbracoContextFactory);
+                ContentUpdater.DeleteFilesAndFolders(deletedEntity.OriginalPath, umbracoContextFactory);
             }
         }
 
@@ -82,7 +89,7 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
                 if (list.Any())
                 {
                     var baseUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority;
-                    Task.Factory.StartNew(() => ContentUpdater.DoUponSavedActions(list, _umbracoContextFactory, baseUrl));
+                    Task.Factory.StartNew(() => ContentUpdater.DoUponSavedActionsWithWait(list, umbracoContextFactory, baseUrl));
                 }
 #pragma warning restore 4014
 
