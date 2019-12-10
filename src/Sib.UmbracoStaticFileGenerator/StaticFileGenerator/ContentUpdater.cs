@@ -110,7 +110,7 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
             CreateFile(oldUrl, StandingData.FileName301);
             var textFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\"  + StandingData.TemplatesFolder.RemoveAllSlashes() + "\\" + StandingData.HtmlFile301.RemoveAllSlashes();
             string text = File.ReadAllText(textFile);
-            var htmlContents = text.Replace("{url}", url.Replace(StandingData.UmbracoRootFolderUrl.TrimEnd('/'), ""));
+            var htmlContents = text.Replace("{url}", url.Replace(StandingData.UmbracoRootFolderUrl.RemoveAllSlashes(), ""));
             CreateHtmlFile(oldUrl, htmlContents);
         }
 
@@ -124,7 +124,7 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
 
         private static string GetFolderLocation(string url)
         {
-            var replacedUrl = url.Replace(StandingData.UmbracoRootFolderUrl.RemoveAllSlashes(), "").TrimEnd('/');
+            var replacedUrl = url.Replace(StandingData.UmbracoRootFolderUrl.RemoveAllSlashes(), "");
             var folderLocation = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + StandingData.HtmlRootFolder.RemoveAllSlashes() + "\\" + replacedUrl.Replace("/", "\\");
             return folderLocation;
         }

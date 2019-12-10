@@ -22,7 +22,7 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
         /// <summary>
         /// The URL Umbraco uses but we need to skip for creating our files and links
         /// </summary>
-        public static string UmbracoRootFolderUrl = "/website/";
+        public static string UmbracoRootFolderUrl = "website";
 
         /// <summary>
         /// The folder containing 301 templates etc
