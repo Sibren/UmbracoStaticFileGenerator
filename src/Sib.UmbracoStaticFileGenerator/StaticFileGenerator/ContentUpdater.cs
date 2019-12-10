@@ -4,29 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Web;
-using System.Web.Hosting;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Web;
 
-namespace Sib.UmbracoStaticFileGenerator.Services
+namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
 {
     public static class ContentUpdater
     {
 
-        /// <summary>
-        /// The Folder where the HTML-files should be stored
-        /// </summary>
-        private static readonly string htmlRootFolder = "www";
-
-        /// <summary>
-        /// The URL Umbraco uses but we need to skip for creating our files and links
-        /// </summary>
-        private static readonly string cmsRootFolder = "/website/";
-
         private static readonly object lockObject = new object();
 
-        private static readonly string fileNameFor301 = ".301";
 
         public static void DoUponSavedActions(IEnumerable<IPublishedContent> entities, IUmbracoContextFactory contextFactory, string baseUrl)
         {
@@ -54,7 +41,7 @@ namespace Sib.UmbracoStaticFileGenerator.Services
                             StandingData.OldModels.RemoveAll(x => x.UmbracoId == entity.Id);
                         }
                         // Todo: check if internalredirectID
-                        if (entity == null || ((entity.TemplateId == null || entity.TemplateId < 1) && !entity.Properties.Any(x => x.Alias == StandingData.UmbracoInternalRedirectIdName))) continue;
+                        if (entity == null || (entity.TemplateId == null || entity.TemplateId < 1) && !entity.Properties.Any(x => x.Alias == StandingData.UmbracoInternalRedirectIdName)) continue;
                         if (entity.Id == 0)
                         {
                             throw new ArgumentNullException("This should never happen");
@@ -74,7 +61,7 @@ namespace Sib.UmbracoStaticFileGenerator.Services
                             // if it's a new page, it has no url yet. We have to move this to somewhere else, after saving
                             var niceUrl = baseUrl.TrimEnd('/') + node.Url;
 
-                            var html = ContentUpdater.GetHtmlFromUrl(niceUrl);
+                            var html = GetHtmlFromUrl(niceUrl);
 
                             CreateHtmlFile(node.Url, html);
                             Delete301(node.Url);
@@ -118,11 +105,12 @@ namespace Sib.UmbracoStaticFileGenerator.Services
 
         public static void Create301(string oldUrl, string url)
         {
+
             // Create a file so we can recognize it not to be indexed by crawlers etc
-            CreateFile(oldUrl, fileNameFor301);
-            var textFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\templates\\301.html";
+            CreateFile(oldUrl, StandingData.FileName301);
+            var textFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\"  + StandingData.TemplatesFolder.RemoveAllSlashes() + "\\" + StandingData.HtmlFile301.RemoveAllSlashes();
             string text = File.ReadAllText(textFile);
-            var htmlContents = text.Replace("{url}", url.Replace(cmsRootFolder.TrimEnd('/'), ""));
+            var htmlContents = text.Replace("{url}", url.Replace(StandingData.UmbracoRootFolderUrl.TrimEnd('/'), ""));
             CreateHtmlFile(oldUrl, htmlContents);
         }
 
@@ -131,13 +119,13 @@ namespace Sib.UmbracoStaticFileGenerator.Services
             var folderLocation = GetFolderLocation(folderName);
             bool exists = Directory.Exists(folderLocation);
             if (exists)
-                File.Delete(folderLocation.TrimEnd('\\') + "\\" + fileNameFor301);
+                File.Delete(folderLocation.TrimEnd('\\') + "\\" + StandingData.FileName301.RemoveAllSlashes());
         }
 
         private static string GetFolderLocation(string url)
         {
-            var replacedUrl = url.Replace(cmsRootFolder, "").TrimEnd('/');
-            var folderLocation = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + htmlRootFolder + "\\" + replacedUrl.Replace("/", "\\");
+            var replacedUrl = url.Replace(StandingData.UmbracoRootFolderUrl.RemoveAllSlashes(), "").TrimEnd('/');
+            var folderLocation = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + StandingData.HtmlRootFolder.RemoveAllSlashes() + "\\" + replacedUrl.Replace("/", "\\");
             return folderLocation;
         }
 
@@ -200,7 +188,7 @@ namespace Sib.UmbracoStaticFileGenerator.Services
                     // if there's no link or it has no value, move on
                     if (linkAttribute == null || string.IsNullOrEmpty(linkAttribute.Value)) continue;
 
-                    linkAttribute.Value = linkAttribute.Value.Replace(cmsRootFolder.TrimEnd('/'), "");
+                    linkAttribute.Value = linkAttribute.Value.Replace(StandingData.UmbracoRootFolderUrl.TrimEnd('/'), "");
                 }
 
                 return oldHtmlDocument.DocumentNode.OuterHtml;

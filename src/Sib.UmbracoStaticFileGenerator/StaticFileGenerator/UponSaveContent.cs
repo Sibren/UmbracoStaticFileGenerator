@@ -1,5 +1,4 @@
 ﻿using Sib.UmbracoStaticFileGenerator.Models;
-using Sib.UmbracoStaticFileGenerator.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,7 @@ using Umbraco.Core.Services;
 using Umbraco.Core.Services.Implement;
 using Umbraco.Web;
 
-namespace Sib.UmbracoStaticFileGenerator
+namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
 {
     public class UponSaveContent : IUserComposer
     {
@@ -86,7 +85,7 @@ namespace Sib.UmbracoStaticFileGenerator
                     Task.Factory.StartNew(() => ContentUpdater.DoUponSavedActions(list, _umbracoContextFactory, baseUrl));
                 }
 #pragma warning restore 4014
-                
+
             }
             catch (Exception ex)
             {
@@ -123,6 +122,6 @@ namespace Sib.UmbracoStaticFileGenerator
                 e.Cancel = true;
                 e.Messages.Add(new EventMessage("Error", ex.Message, EventMessageType.Error));
             }
-        } 
+        }
     }
 }

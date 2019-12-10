@@ -1,0 +1,21 @@
+﻿<div id="modelsBuilder" ng-controller="Umbraco.Dashboard.StaticSiteGenerator as vm">
+
+    <umb-box>
+        <umb-box-content>
+
+            <div ng-show="!vm.loading" class="pull-right">
+                <button type="button" class="btn" ng-click="vm.reload()"><span>Reload</span></button>
+            </div>
+
+            <h3 class="bold">Static file generator</h3>
+
+            <umb-load-indicator ng-show="vm.loading"></umb-load-indicator>
+
+            <div ng-show="!vm.loading && vm.dashboard">
+                <div ng-bind-html="vm.dashboard.text"></div>
+
+            </div>
+        </umb-box-content>
+    </umb-box>
+
+</div>

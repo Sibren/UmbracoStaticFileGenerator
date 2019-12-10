@@ -1,7 +1,7 @@
 # Umbraco Static Site Generator
 This creates a static HTML-file for every node that has a template.
 It renders an HTML-file for anything needed.
-Current site keeps everything under /website/, publishes under /
+Current site keeps everything under /website/, publishes under /www/
 
 # Login
 Username: demologin@test.com
@@ -17,8 +17,10 @@ Password: Password123
 2. ~~Take care of redirects~~
 3. ~~Take care of deleted items~~
 4. ~~Replace urls with actual urls~~
-5. Make more settings variable (create config file)
+5. Make more settings variable (custom section in Settings, json config file)
 6. ~~Check if / has index.html and what to do with it?~~
+7. Check if redirect node redirects to this node and update.
+8. Pull apart from Umbraco, create custom DLL
 
 ### Wishlist
 1. Publish all nodes to HTML when site starts/has no items in /www/
