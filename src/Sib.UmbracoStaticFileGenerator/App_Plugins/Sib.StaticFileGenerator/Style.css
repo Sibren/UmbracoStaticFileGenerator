@@ -1,4 +1,10 @@
-﻿.static-site-generator ul {
+﻿.static-site-generator .error-message {
+  color: red;
+  font-weight: bold;
+  padding: 10px 0;
+  display: block; }
+
+.static-site-generator ul {
   list-style-type: none;
   padding: 0;
   margin-left: 0;

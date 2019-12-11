@@ -43,3 +43,4 @@ src/UmbracoTestProject/bin/
 src/UmbracoTestProject/obj/
 src/UmbracoTestProject/Umbraco/
 src/UmbracoTestProject/App_Plugins/Sib.StaticFileGenerator/
+src/UmbracoTestProject/www/

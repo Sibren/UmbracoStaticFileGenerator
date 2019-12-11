@@ -91,6 +91,13 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
         /// <param name="app"></param>
         private void ConfigureMiddleware(IAppBuilder app)
         {
+            // create the html root folder if it doesn't exist
+            var folderLocation = ContentUpdater.GetFolderLocation("");
+            bool exists = Directory.Exists(folderLocation);
+            if (!exists)
+                Directory.CreateDirectory(folderLocation);
+
+
             var physicalFileSystem = new PhysicalFileSystem(@"./" + StandingData.HtmlRootFolder);
 
             var options = new FileServerOptions

@@ -7,8 +7,11 @@
             <umb-load-indicator ng-show="vm.loading"></umb-load-indicator>
 
             <div ng-show="!vm.loading" class="static-site-generator">
-                <div ng-bind-html="vm.dashboard.text"></div>
-                <div ng-show="vm.dashboard.isEnabled">
+                <div ng-show="!vm.dashboard.hideTopNodeSettingNeedsToBeFalse" ng-bind-html="vm.dashboard.text"></div>
+                <div ng-show="vm.dashboard.hideTopNodeSettingNeedsToBeFalse">
+                    <span class="error-message"><localize key="HideTopNodeSettingIsSetToFalseText"></localize></span>
+                </div>
+                <div ng-show="vm.dashboard.isEnabled && !vm.dashboard.hideTopNodeSettingNeedsToBeFalse">
                     <h3 class="bold"><localize key="Settings"></localize></h3>
                     <localize key="SettingsExplanation"></localize>
                     <ul>
@@ -26,12 +29,12 @@
                     <div ng-show="vm.saved">
                         <localize key="DataSaved">Saved the data</localize>
                     </div>
-                    <button type="button" ng-click="vm.generate()" class="btn btn-success">
+                    <button type="button" ng-click="vm.saveSettings()" class="btn btn-success">
                         <localize key="Save">Save settings</localize>
                     </button>
                 </div>
             </div>
- 
+
         </umb-box-content>
     </umb-box>
 

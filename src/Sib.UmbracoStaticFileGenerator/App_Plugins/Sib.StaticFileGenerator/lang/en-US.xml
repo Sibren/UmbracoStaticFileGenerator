@@ -9,13 +9,14 @@
   <area alias="general">
     <key alias="StaticSiteGeneratorTitle">Static File Generator</key>
     <key alias="Description">Welcome to a new episode of Jackass</key>
-    <key alias="NotEnabled">Static Site Generator is not enabled. Set the web.config key to true</key>
+    <key alias="NotEnabled">Static Site Generator is not enabled. Set the web.config key 'Sib.UmbracoStaticFileGenerator.Enabled' to true</key>
     <key alias="DataSaved">The data is saved</key>
+    <key alias="HideTopNodeSettingIsSetToFalseText">The web.config-setting HideTopNodeSettingIsSetToFalse is set to 'true'. Pages will be saved to the HTML-folder, but won't show unless you set it to 'false'</key>
     <key alias="Settings">Settings</key>
     <key alias="SettingsExplanation">These should be fine to go with by default. Please make sure you know what you're doing if you change anything!</key>
     <key alias="Save">Save properties</key>
     <key alias="UmbracoRootFolderUrl">The root folder of the website</key>
-    <key alias="UmbracoRootFolderUrlExplanation">By default: 'website'. Change this if the rootnode of your website in Umbraco has a different name then website.</key>
+    <key alias="UmbracoRootFolderUrlExplanation">By default: 'website'. Change this if the rootnode of your website in Umbraco has a name other then website.</key>
     <key alias="TemplatesFolder">Folder with the templates</key>
     <key alias="TemplatesFolderExplanation">In this folder you store the 301.html (see below)</key>
     <key alias="HtmlFile301">The filename of the 301-file in templates</key>

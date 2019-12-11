@@ -57,7 +57,8 @@ namespace Sib.UmbracoStaticFileGenerator.Controllers.StaticFileGenerator
             {
                 IsEnabled = config.IsEnabled,
                 Text = GetText(),
-                Config = Config()
+                Config = Config(),
+                HideTopNodeSettingNeedsToBeFalse = config.HideTopNodeSettingNeedsToBeFalse
             };
         }
 
@@ -88,11 +89,14 @@ namespace Sib.UmbracoStaticFileGenerator.Controllers.StaticFileGenerator
         [DataContract]
         internal class Dashboard
         {
-            [DataMember(Name = "enable")]
+            [DataMember(Name = "isEnabled")]
             public bool IsEnabled;
 
             [DataMember(Name = "text")]
             public string Text;
+
+            [DataMember(Name = "hideTopNodeSettingIsSetToFalse")]
+            public bool HideTopNodeSettingNeedsToBeFalse;
 
             [DataMember(Name = "config")]
             public ImportConfigModel Config;

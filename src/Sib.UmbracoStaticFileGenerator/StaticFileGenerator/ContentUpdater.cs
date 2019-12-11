@@ -133,7 +133,7 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
                 File.Delete(folderLocation.TrimEnd('\\') + "\\" + StandingData.FileName301.RemoveAllSlashes());
         }
 
-        private static string GetFolderLocation(string url)
+        public static string GetFolderLocation(string url)
         {
             var replacedUrl = url.Replace(StandingData.UmbracoRootFolderUrl.RemoveAllSlashes(), "");
             var folderLocation = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + StandingData.HtmlRootFolder.RemoveAllSlashes() + "\\" + replacedUrl.Replace("/", "\\");
