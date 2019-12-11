@@ -3,6 +3,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
+using Umbraco.Core.Services;
 using Umbraco.Web.Editors;
 
 namespace Sib.UmbracoStaticFileGenerator.Controllers.StaticFileGenerator
@@ -77,10 +78,10 @@ namespace Sib.UmbracoStaticFileGenerator.Controllers.StaticFileGenerator
         {
             if (!config.IsEnabled)
             {
-                return "Not enabled";
+                return Services.TextService.Localize("general/NotEnabled");
             } else
             {
-                return "Welcome to a new episode of Jackass";
+                return Services.TextService.Localize("general/Description");
             }
         }
 

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<language alias="en_us" intName="English (US)" localName="English (US)" lcid="" culture="en-US">
+  <creator>
+    <name>Sibren Bouman</name>
+  </creator>
+  <area alias="dashboardTabs">
+    <key alias="StaticFileGenerator">Static File Generator</key>
+  </area>
+  <area alias="general">
+    <key alias="StaticSiteGeneratorTitle">Static File Generator</key>
+    <key alias="Description">Welcome to a new episode of Jackass</key>
+    <key alias="NotEnabled">Static Site Generator is not enabled. Set the web.config key to true</key>
+    <key alias="DataSaved">The data is saved</key>
+    <key alias="Settings">Settings</key>
+    <key alias="SettingsExplanation">These should be fine to go with by default. Please make sure you know what you're doing if you change anything!</key>
+    <key alias="Save">Save properties</key>
+    <key alias="UmbracoRootFolderUrl">The root folder of the website</key>
+    <key alias="UmbracoRootFolderUrlExplanation">By default: 'website'. Change this if the rootnode of your website in Umbraco has a different name then website.</key>
+    <key alias="TemplatesFolder">Folder with the templates</key>
+    <key alias="TemplatesFolderExplanation">In this folder you store the 301.html (see below)</key>
+    <key alias="HtmlFile301">The filename of the 301-file in templates</key>
+    <key alias="HtmlFile301Explanation">In the template-folder, what is the name of your 301-file (by default 301.html). Don't change unless you know why.</key>
+    <key alias="FileName301">The filename of the created 301-file</key>
+    <key alias="FileName301Explanation">This is the file that's put in a folder to recognize a 301-redirect, without needing to read the HTML-file</key>
+    <key alias="HtmlRootFolder">Html Root Folder</key>
+    <key alias="HtmlRootFolderExplanation">The output-folder of your HTML-files. By default it's www.</key>
+  </area>
+</language>

@@ -2,25 +2,36 @@
 
     <umb-box>
         <umb-box-content>
-            <h3 class="bold">Static file generator</h3>
+            <h2 class="bold"><localize key="StaticSiteGeneratorTitle">Default value</localize></h2>
 
             <umb-load-indicator ng-show="vm.loading"></umb-load-indicator>
 
-            <div ng-show="!vm.loading">
+            <div ng-show="!vm.loading" class="static-site-generator">
                 <div ng-bind-html="vm.dashboard.text"></div>
-                <ul>
-                    <li ng-repeat="(key, value) in vm.dashboard.config">
-                        <label for="{{key}}">{{key}}</label>
-                        <input type="text" name="{{key}}" id="{{key}}" value="{{value}}" />
-                    </li>
-                </ul>
+                <div ng-show="vm.dashboard.isEnabled">
+                    <h3 class="bold"><localize key="Settings"></localize></h3>
+                    <localize key="SettingsExplanation"></localize>
+                    <ul>
+                        <li ng-repeat="(key, value) in vm.dashboard.config">
+                            <label for="{{key}}">
+                                <localize key="{{key}}"></localize>
+                            </label>
+                            <div>
+                                <input type="text" name="{{key}}" id="{{key}}" value="{{value}}" />
+                                <span><localize key="{{key}}Explanation"></localize></span>
+                            </div>
+
+                        </li>
+                    </ul>
+                    <div ng-show="vm.saved">
+                        <localize key="DataSaved">Saved the data</localize>
+                    </div>
+                    <button type="button" ng-click="vm.generate()" class="btn btn-success">
+                        <localize key="Save">Save settings</localize>
+                    </button>
+                </div>
             </div>
-            <div ng-show"vm.saved">
-                Saved data
-            </div>
-            <button type="button" ng-click="vm.generate()" class="btn btn-success">
-                <span>Save settings</span>
-            </button>
+ 
         </umb-box-content>
     </umb-box>
 

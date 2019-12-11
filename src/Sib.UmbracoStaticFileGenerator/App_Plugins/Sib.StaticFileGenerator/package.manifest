@@ -1,18 +1,18 @@
 ﻿{
-    // array of files we want to inject into the application
   "javascript": [
     "~/App_Plugins/Sib.StaticFileGenerator/staticfilegenerator.controller.js",
     "~/App_Plugins/Sib.StaticFileGenerator/staticfilegenerator.resource.js"
   ],
-
-    // models builder dashboard
-    "dashboards":  [
-      {
-        "alias": "staticFileGenerator",
-        "name": "Static File Generation",
-        "view": "/App_Plugins/Sib.StaticFileGenerator/staticfilegenerator.html",
-        "sections": [ "settings" ],
-        "weight": 40
-      }
-    ]
+  "css": [
+    "~/App_Plugins/Sib.StaticFileGenerator/style.css"
+  ],
+  "dashboards": [
+    {
+      "alias": "StaticFileGenerator",
+      "name": "Static File Generation",
+      "view": "/App_Plugins/Sib.StaticFileGenerator/staticfilegenerator.html",
+      "sections": [ "settings" ],
+      "weight": 40
+    }
+  ]
 }

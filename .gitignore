@@ -39,3 +39,7 @@ src/Sib.UmbracoStaticFileGenerator/Content/
 src/Sib.UmbracoStaticFileGenerator/config/
 src/Sib.UmbracoStaticFileGenerator/Views/Partials/Grid/
 src/Sib.UmbracoStaticFileGenerator/Views/
+src/UmbracoTestProject/bin/
+src/UmbracoTestProject/obj/
+src/UmbracoTestProject/Umbraco/
+src/UmbracoTestProject/App_Plugins/Sib.StaticFileGenerator/

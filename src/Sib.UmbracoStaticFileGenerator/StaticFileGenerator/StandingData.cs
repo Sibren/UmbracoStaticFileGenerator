@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Sib.UmbracoStaticFileGenerator.Models;
 using System;
 using System.Collections.Generic;
 
@@ -7,12 +6,24 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
 {
     public static class StandingData
     {
+        /// <summary>
+        /// Used after saving, to check for 301-changes
+        /// </summary>
         public static List<UmbracoUrlModel> OldModels { get; set; } = new List<UmbracoUrlModel>();
 
+        /// <summary>
+        /// Don't want to make typo's
+        /// </summary>
         public static string UmbracoInternalRedirectIdName = "umbracoInternalRedirectId";
 
+        /// <summary>
+        /// The name of this plugin
+        /// </summary>
         public static string ApplicationName = "StaticFileGenerator";
 
+        /// <summary>
+        /// The location of the configfile
+        /// </summary>
         public static string ConfigFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\config\\Sib.StaticFileGenerator.js";
 
         /// <summary>
@@ -40,6 +51,10 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
         /// </summary>
         public static string FileName301 = ".301";
 
+        /// <summary>
+        /// Update the standing data and save to file
+        /// </summary>
+        /// <param name="configModel"></param>
         public static void SaveStandingData(ImportConfigModel configModel)
         {
             if (!string.IsNullOrEmpty(configModel.FileName301)) StandingData.FileName301 = configModel.FileName301;
@@ -48,8 +63,7 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
             if (!string.IsNullOrEmpty(configModel.TemplatesFolder)) StandingData.TemplatesFolder = configModel.TemplatesFolder;
             if (!string.IsNullOrEmpty(configModel.UmbracoRootFolderUrl)) StandingData.UmbracoRootFolderUrl = configModel.UmbracoRootFolderUrl;
 
-            // todo: save to config
-            ContentUpdater.CreateFile(StandingData.ConfigFile, JsonConvert.SerializeObject(configModel));
+            ContentUpdater.CreateFile(StandingData.ConfigFile, JsonConvert.SerializeObject(configModel, Formatting.Indented));
         }
     }
 }

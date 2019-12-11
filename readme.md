@@ -17,9 +17,9 @@ Password: Password123
 2. ~~Take care of redirects~~
 3. ~~Take care of deleted items~~
 4. ~~Replace urls with actual urls~~
-5. Make more settings variable (custom section in Settings, json config file)
+5. ~~Make more settings variable (custom section in Settings, json config file)~~
 6. ~~Check if / has index.html and what to do with it?~~
-7. Check if redirect node redirects to this node and update.
+7. ~~Check if redirect node redirects to this node and update.~~
 8. Pull apart from Umbraco, create custom DLL
 
 ### Wishlist
