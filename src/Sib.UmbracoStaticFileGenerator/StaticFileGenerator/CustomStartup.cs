@@ -21,6 +21,7 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
     {
         public override void Compose(Composition composition)
         {
+            composition.ContentFinders().Insert<ContentFinderForCheckingWebsiteUrl>();
             base.Compose(composition);
 
             composition.Configs.Add(() => new StaticFileGeneratorConfig());

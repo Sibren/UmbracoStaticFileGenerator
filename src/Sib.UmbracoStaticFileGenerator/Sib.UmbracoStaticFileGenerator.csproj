@@ -440,6 +440,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StaticFileGenerator\ContentFinderForCheckingWebsiteUrl.cs" />
     <Compile Include="StaticFileGenerator\Helpers.cs" />
     <Compile Include="StaticFileGenerator\ImportConfigModel.cs" />
     <Compile Include="StaticFileGenerator\StaticFileGeneratorConfig.cs" />

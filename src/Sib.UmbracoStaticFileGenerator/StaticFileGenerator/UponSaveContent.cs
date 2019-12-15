@@ -84,9 +84,12 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
                     }
                 }
 
+
+
 #pragma warning disable 4014
                 if (list.Any())
                 {
+
                     var baseUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority;
                     Task.Factory.StartNew(() => ContentUpdater.DoUponSavedActionsWithWait(list, umbracoContextFactory, baseUrl));
                 }

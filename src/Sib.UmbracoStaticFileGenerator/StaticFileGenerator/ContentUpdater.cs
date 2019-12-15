@@ -119,9 +119,9 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
 
             // Create a file so we can recognize it not to be indexed by crawlers etc
             CreateWebsiteFile(oldUrl, StandingData.FileName301);
-            var textFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\"  + StandingData.TemplatesFolder.RemoveAllSlashes() + "\\" + StandingData.HtmlFile301.RemoveAllSlashes();
+            var textFile = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\"  + StandingData.TemplatesFolder.RemoveBeginningAndTrailingSlashes() + "\\" + StandingData.HtmlFile301.RemoveBeginningAndTrailingSlashes();
             string text = File.ReadAllText(textFile);
-            var htmlContents = text.Replace("{url}", url.Replace(StandingData.UmbracoRootFolderUrl.RemoveAllSlashes(), ""));
+            var htmlContents = text.Replace("{url}", url.Replace(StandingData.UmbracoRootFolderUrl.RemoveBeginningAndTrailingSlashes(), ""));
             CreateHtmlFile(oldUrl, htmlContents);
         }
 
@@ -130,13 +130,13 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
             var folderLocation = GetFolderLocation(folderName);
             bool exists = Directory.Exists(folderLocation);
             if (exists)
-                File.Delete(folderLocation.TrimEnd('\\') + "\\" + StandingData.FileName301.RemoveAllSlashes());
+                File.Delete(folderLocation.TrimEnd('\\') + "\\" + StandingData.FileName301.RemoveBeginningAndTrailingSlashes());
         }
 
         public static string GetFolderLocation(string url)
         {
-            var replacedUrl = url.Replace(StandingData.UmbracoRootFolderUrl.RemoveAllSlashes(), "");
-            var folderLocation = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + StandingData.HtmlRootFolder.RemoveAllSlashes() + "\\" + replacedUrl.Replace("/", "\\");
+            var replacedUrl = url.Replace(StandingData.UmbracoRootFolderUrl.RemoveBeginningAndTrailingSlashes(), "");
+            var folderLocation = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + StandingData.HtmlRootFolder.RemoveBeginningAndTrailingSlashes() + "\\" + replacedUrl.Replace("/", "\\");
             return folderLocation;
         }
 

@@ -57,11 +57,11 @@ namespace Sib.UmbracoStaticFileGenerator.StaticFileGenerator
         /// <param name="configModel"></param>
         public static void SaveStandingData(ImportConfigModel configModel)
         {
-            if (!string.IsNullOrEmpty(configModel.FileName301)) StandingData.FileName301 = configModel.FileName301;
-            if (!string.IsNullOrEmpty(configModel.HtmlFile301)) StandingData.HtmlFile301 = configModel.HtmlFile301;
-            if (!string.IsNullOrEmpty(configModel.HtmlRootFolder)) StandingData.HtmlRootFolder = configModel.HtmlRootFolder;
-            if (!string.IsNullOrEmpty(configModel.TemplatesFolder)) StandingData.TemplatesFolder = configModel.TemplatesFolder;
-            if (!string.IsNullOrEmpty(configModel.UmbracoRootFolderUrl)) StandingData.UmbracoRootFolderUrl = configModel.UmbracoRootFolderUrl;
+            if (!string.IsNullOrEmpty(configModel.FileName301)) StandingData.FileName301 = configModel.FileName301.RemoveBeginningAndTrailingSlashes();
+            if (!string.IsNullOrEmpty(configModel.HtmlFile301)) StandingData.HtmlFile301 = configModel.HtmlFile301.RemoveBeginningAndTrailingSlashes();
+            if (!string.IsNullOrEmpty(configModel.HtmlRootFolder)) StandingData.HtmlRootFolder = configModel.HtmlRootFolder.RemoveBeginningAndTrailingSlashes();
+            if (!string.IsNullOrEmpty(configModel.TemplatesFolder)) StandingData.TemplatesFolder = configModel.TemplatesFolder.RemoveBeginningAndTrailingSlashes();
+            if (!string.IsNullOrEmpty(configModel.UmbracoRootFolderUrl)) StandingData.UmbracoRootFolderUrl = configModel.UmbracoRootFolderUrl.RemoveBeginningAndTrailingSlashes();
 
             ContentUpdater.CreateFile(StandingData.ConfigFile, JsonConvert.SerializeObject(configModel, Formatting.Indented));
         }
